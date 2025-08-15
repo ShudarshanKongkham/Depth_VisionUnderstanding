@@ -1,0 +1,10 @@
+#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+
+flask
+opencv-python
+torch
+torchvision
+Pillow
+transformers
+numpy
+hf_xet
