@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🔥 ARIA Vision Pro - AI Depth Intelligence</title>
+    <title>🔥 ARIA Vision Pro - AI Depth & Scene Intelligence</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -39,7 +39,7 @@
         }
         
         .container { 
-            max-width: 1400px; 
+            max-width: 1600px; 
             margin: 0 auto; 
             padding: 20px;
             position: relative;
@@ -71,21 +71,6 @@
             font-size: 1.4em;
             opacity: 0.8;
             margin-bottom: 10px;
-        }
-        
-        .neural-network {
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 100px;
-            height: 100px;
-            opacity: 0.1;
-            animation: rotate 20s linear infinite;
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
         
         .controls {
@@ -174,72 +159,16 @@
             box-shadow: 0 15px 35px rgba(3, 218, 198, 0.5);
         }
         
-        .device-selector {
-            background: linear-gradient(135deg, rgba(3, 218, 198, 0.1), rgba(100, 255, 218, 0.05));
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(3, 218, 198, 0.3);
-            display: none;
+        .chat-toggle {
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+            border: 1px solid rgba(255, 87, 34, 0.3);
         }
         
-        .device-selector.show {
-            display: block;
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        .device-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .device-option {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .device-option:hover {
-            border-color: rgba(3, 218, 198, 0.5);
-            transform: translateY(-3px);
-            background: rgba(3, 218, 198, 0.1);
-        }
-        
-        .device-option.active {
-            border-color: #03dac6;
-            background: rgba(3, 218, 198, 0.2);
-            box-shadow: 0 0 20px rgba(3, 218, 198, 0.3);
-        }
-        
-        .device-option.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .device-option.disabled:hover {
-            transform: none;
-            border-color: rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .device-name {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #03dac6;
-            margin-bottom: 8px;
-        }
-        
-        .device-specs {
-            font-size: 0.9em;
-            opacity: 0.8;
-            line-height: 1.4;
+        .chat-toggle:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 152, 0, 0.5);
         }
         
         #status {
@@ -254,71 +183,23 @@
             font-weight: 500;
         }
         
-        .performance-panel {
-            background: linear-gradient(135deg, rgba(63, 81, 181, 0.1), rgba(187, 134, 252, 0.1));
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(187, 134, 252, 0.3);
-            display: none;
-        }
-        
-        .performance-panel.show {
-            display: block;
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .performance-grid {
+        .main-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-        }
-        
-        .metric-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(100, 255, 218, 0.5);
-        }
-        
-        .metric-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #64ffda;
-            margin-bottom: 5px;
-        }
-        
-        .metric-label {
-            font-size: 0.9em;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 350px;
+            grid-template-columns: 2fr 1fr;
             gap: 30px;
             align-items: start;
         }
         
-        .video-container {
-            display: grid;
-            grid-template-columns: 1fr;
+        .left-section {
+            display: flex;
+            flex-direction: column;
             gap: 25px;
+        }
+        
+        .video-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
         
         .video-box {
@@ -360,6 +241,8 @@
         .video-box img {
             width: 100%;
             max-width: 100%;
+            height: 300px;
+            object-fit: cover;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             transition: all 0.4s ease;
@@ -370,42 +253,36 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
         
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .legend {
+        .depth-legend {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
         
-        .legend:hover {
+        .depth-legend:hover {
             border-color: rgba(100, 255, 218, 0.3);
             transform: translateY(-2px);
         }
         
-        .legend h3 {
+        .depth-legend h3 {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-size: 1.2em;
             color: #64ffda;
             font-weight: 600;
         }
         
         .colorbar {
-            height: 40px;
+            height: 30px;
             background: linear-gradient(to right, 
                 #000000 0%, #1a0033 10%, #4a0080 20%, #7300cc 30%, 
                 #9900ff 40%, #cc3300 50%, #ff6600 60%, #ff9900 70%, 
                 #ffcc00 80%, #ffff00 90%, #ffffff 100%);
-            border-radius: 20px;
-            margin-bottom: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
@@ -435,51 +312,254 @@
             font-weight: 500;
         }
         
-        .info-card {
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Vision Chat Interface */
+        .chat-panel {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 87, 34, 0.05));
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            max-height: 600px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-panel.show {
+            display: flex !important;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff9800;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            text-align: right;
+        }
+        
+        .assistant-message {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        .message-text {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        .message-time {
+            font-size: 0.8em;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 44px;
+            max-height: 100px;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #ff9800;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+        }
+        
+        .send-button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Performance Panel */
+        .performance-panel {
+            background: linear-gradient(135deg, rgba(63, 81, 181, 0.1), rgba(187, 134, 252, 0.1));
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            display: none;
+        }
+        
+        .performance-panel.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(100, 255, 218, 0.5);
+        }
+        
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #64ffda;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.85em;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .device-selector {
             background: linear-gradient(135deg, rgba(3, 218, 198, 0.1), rgba(100, 255, 218, 0.05));
             border-radius: 20px;
             padding: 25px;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(3, 218, 198, 0.3);
+            display: none;
         }
         
-        .info-card h3 {
-            color: #03dac6;
-            margin-bottom: 15px;
-            font-size: 1.2em;
+        .device-selector.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .device-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .device-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .device-option:hover {
+            border-color: rgba(3, 218, 198, 0.5);
+            transform: translateY(-3px);
+            background: rgba(3, 218, 198, 0.1);
+        }
+        
+        .device-option.active {
+            border-color: #03dac6;
+            background: rgba(3, 218, 198, 0.2);
+            box-shadow: 0 0 20px rgba(3, 218, 198, 0.3);
+        }
+        
+        .device-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .device-name {
+            font-size: 1.1em;
             font-weight: 600;
+            color: #03dac6;
+            margin-bottom: 8px;
         }
         
-        .info-card ul {
-            list-style: none;
-            padding: 0;
+        .device-specs {
+            font-size: 0.9em;
+            opacity: 0.8;
+            line-height: 1.4;
         }
         
-        .info-card li {
-            margin: 10px 0;
-            padding-left: 20px;
-            position: relative;
-            opacity: 0.9;
-        }
-        
-        .info-card li::before {
-            content: '🔥';
-            position: absolute;
-            left: 0;
-        }
-        
+        /* Responsive Design */
         @media (max-width: 1200px) {
-            .main-content {
+            .main-layout {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
             
-            .sidebar {
-                order: -1;
-            }
-            
-            .performance-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            .video-section {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -498,25 +578,12 @@
                 font-size: 2.5em;
             }
             
-            .header p {
-                font-size: 1.1em;
-            }
-            
             button {
                 width: 200px;
             }
             
             .performance-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .metric-card {
-                padding: 15px;
-            }
-            
-            .metric-value {
-                font-size: 1.5em;
             }
         }
         
@@ -559,15 +626,12 @@
     <div class="container">
         <div class="header">
             <h1>🔥 ARIA Vision Pro</h1>
-            <p>Next-Generation Real-Time AI Depth Intelligence</p>
+            <p>Multi-Modal AI with Enhanced Depth Intelligence</p>
             <p style="font-size: 1em; opacity: 0.7; margin-top: 5px;">
                 <i class="fas fa-brain"></i> Neural Depth Processing • 
-                <i class="fas fa-rocket"></i> Ultra-Fast Pipeline • 
-                <i class="fas fa-eye"></i> Computer Vision
+                <i class="fas fa-eye"></i> Scene Understanding • 
+                <i class="fas fa-comments"></i> Spatial Intelligence Chat
             </p>
-            <div class="neural-network">
-                <i class="fas fa-project-diagram" style="font-size: 100px; color: rgba(100, 255, 218, 0.1);"></i>
-            </div>
         </div>
         
         <div class="controls">
@@ -583,9 +647,10 @@
             <button class="device-toggle" onclick="toggleDeviceSelector()">
                 <i class="fas fa-microchip"></i> Device
             </button>
+
         </div>
         
-        <div id="status" class="pulse">🚀 ARIA Vision Ready - Initialize AI Depth Processing</div>
+        <div id="status" class="pulse">🚀 ARIA Vision Pro Ready - Initialize AI Systems</div>
         
         <div class="device-selector" id="deviceSelector">
             <h3 style="text-align: center; margin-bottom: 20px; color: #03dac6;">
@@ -610,7 +675,11 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-value" id="processingTime">0</div>
-                    <div class="metric-label">Processing (ms)</div>
+                    <div class="metric-label">Depth (ms)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="visionTime">0</div>
+                    <div class="metric-label">Vision (ms)</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value" id="totalFrames">0</div>
@@ -624,10 +693,6 @@
                     <div class="metric-value" id="memoryUsage">0</div>
                     <div class="metric-label">Memory (%)</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value" id="queueSize">0</div>
-                    <div class="metric-label">Queue Size</div>
-                </div>
                 <div class="metric-card" id="gpuMemoryCard" style="display: none;">
                     <div class="metric-value" id="gpuMemory">0</div>
                     <div class="metric-label">GPU Memory (%)</div>
@@ -639,38 +704,82 @@
             </div>
         </div>
         
-        <div class="main-content">
-            <div class="video-container">
-                <div class="video-box">
-                    <h3><i class="fas fa-camera"></i> Live Camera Feed</h3>
-                    <img id="original" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzY0ZmZkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkF3YWl0aW5nIElucHV0Li4uPC90ZXh0Pjwvc3ZnPg==">
+        <div class="main-layout">
+            <div class="left-section">
+                <div class="video-section">
+                    <div class="video-box">
+                        <h3><i class="fas fa-camera"></i> Live Camera Feed</h3>
+                        <img id="original" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzY0ZmZkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkF3YWl0aW5nIElucHV0Li4uPC90ZXh0Pjwvc3ZnPg==">
+                    </div>
+                    <div class="video-box">
+                        <h3><i class="fas fa-fire"></i> AI Neural Depth Map</h3>
+                        <img id="depth" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2JiODZmYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFJIFByb2Nlc3NpbmcuLi48L3RleHQ+PC9zdmc+">
+                    </div>
                 </div>
-                <div class="video-box">
-                    <h3><i class="fas fa-fire"></i> AI Neural Depth Map</h3>
-                    <img id="depth" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2JiODZmYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFJIFByb2Nlc3NpbmcuLi48L3RleHQ+PC9zdmc+">
-                </div>
-            </div>
-            
-            <div class="sidebar">
-        <div class="legend">
-                    <h3><i class="fas fa-palette"></i> Depth Visualization</h3>
-            <div class="colorbar"></div>
-            <div class="depth-labels">
+                
+                <div class="depth-legend">
+                    <h3><i class="fas fa-palette"></i> Depth Visualization Legend</h3>
+                    <div class="colorbar"></div>
+                    <div class="depth-labels">
                         <span><i class="fas fa-mountain"></i> Far</span>
                         <span><i class="fas fa-eye"></i> Medium</span>
                         <span><i class="fas fa-hand-paper"></i> Near</span>
                     </div>
                 </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="chat-panel" id="chatPanel">
+                    <div class="chat-header">
+                        <i class="fas fa-comments"></i> Vision Chat AI
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message assistant-message">
+                            <div class="message-text">👋 Hello! I can see and understand what's in front of your camera. Ask me anything about the scene - objects, colors, distances, or activities! I combine depth perception with scene understanding for enhanced responses.</div>
+                            <div class="message-time">System ready</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <textarea 
+                            id="chatInput" 
+                            class="chat-input" 
+                            placeholder="Ask about what you see... (e.g., 'What objects are in the scene?', 'How far are the objects?')"
+                            rows="3"></textarea>
+                        <button id="sendButton" class="send-button" onclick="sendChatMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
                 
-                <div class="info-card">
-                    <h3><i class="fas fa-info-circle"></i> Features</h3>
-                    <ul>
-                        <li>Real-time depth estimation</li>
-                        <li>AI-powered neural networks</li>
-                        <li>Optimized performance pipeline</li>
-                        <li>Multi-threaded processing</li>
-                        <li>Advanced color mapping</li>
-                        <li>Live performance monitoring</li>
+                <div style="background: linear-gradient(135deg, rgba(3, 218, 198, 0.1), rgba(100, 255, 218, 0.05)); border-radius: 20px; padding: 25px; backdrop-filter: blur(20px); border: 1px solid rgba(3, 218, 198, 0.3);">
+                    <h3 style="color: #03dac6; margin-bottom: 15px; font-size: 1.2em; font-weight: 600;">
+                        <i class="fas fa-info-circle"></i> AI Features
+                    </h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Real-time depth estimation
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Scene understanding & chat
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Multi-modal AI processing
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>CPU/GPU acceleration
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Live performance monitoring
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>OpenAI API compatible
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Spatial intelligence
+                        </li>
+                        <li style="margin: 8px 0; padding-left: 20px; position: relative; opacity: 0.9; font-size: 0.95em;">
+                            <span style="position: absolute; left: 0;">🔥</span>Enhanced depth context
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -683,8 +792,10 @@
         let performanceInterval;
         let performancePanelVisible = false;
         let deviceSelectorVisible = false;
+        let chatPanelVisible = true;
         let availableDevices = [];
         let currentDevice = 'auto';
+        let isProcessingChat = false;
         
         // Initialize animated background
         function createParticles() {
@@ -701,9 +812,9 @@
                 particles.appendChild(particle);
             }
         }
-
+        
         function startCamera() {
-            updateStatus('🚀 Initializing ARIA Vision System...', 'pulse loading');
+            updateStatus('🚀 Initializing ARIA Vision Pro Systems...', 'pulse loading');
             
             fetch('/start')
                 .then(r => r.json())
@@ -711,7 +822,7 @@
                     if (data.success) {
                         isRunning = true;
                         checkModelStatus();
-                        frameInterval = setInterval(updateFrame, 150); // Faster updates
+                        frameInterval = setInterval(updateFrame, 150);
                         if (performancePanelVisible) {
                             performanceInterval = setInterval(updatePerformance, 1000);
                         }
@@ -729,8 +840,11 @@
             fetch('/status')
                 .then(r => r.json())
                 .then(data => {
-                    if (data.model_loaded) {
-                        updateStatus('🔥 ARIA Vision Active - Neural Processing Online', '');
+                    if (data.model_loaded && data.vision_model_loaded) {
+                        updateStatus('🔥 ARIA Vision Pro Active - All AI Systems Online', '');
+                    } else if (data.model_loaded) {
+                        updateStatus('📊 Depth AI Ready - Loading Vision Chat...', 'pulse loading');
+                        setTimeout(checkModelStatus, 1000);
                     } else {
                         updateStatus('🧠 Loading AI Neural Networks...', 'pulse loading');
                         setTimeout(checkModelStatus, 1000);
@@ -749,7 +863,7 @@
                     isRunning = false;
                     clearInterval(frameInterval);
                     clearInterval(performanceInterval);
-                    updateStatus('⏹️ ARIA Vision Stopped - System Idle', '');
+                    updateStatus('⏹️ ARIA Vision Pro Stopped - All Systems Idle', '');
                     resetPerformanceMetrics();
                 })
                 .catch(e => {
@@ -768,7 +882,7 @@
                         document.getElementById('original').src = data.original;
                         document.getElementById('depth').src = data.depth;
                         if (!document.getElementById('status').textContent.includes('Active')) {
-                            updateStatus('🔥 ARIA Vision Active - Real-Time Processing', '');
+                            updateStatus('🔥 ARIA Vision Pro Active - Multi-Modal Processing', '');
                         }
                     } else if (data.error) {
                         if (data.error === 'Model not loaded yet') {
@@ -794,10 +908,10 @@
                 .then(data => {
                     document.getElementById('fps').textContent = data.fps || 0;
                     document.getElementById('processingTime').textContent = data.processing_time_ms || 0;
+                    document.getElementById('visionTime').textContent = data.vision_processing_time_ms || 0;
                     document.getElementById('totalFrames').textContent = data.total_frames || 0;
                     document.getElementById('cpuUsage').textContent = data.cpu_usage || 0;
                     document.getElementById('memoryUsage').textContent = data.memory_usage || 0;
-                    document.getElementById('queueSize').textContent = data.queue_size || 0;
                     document.getElementById('currentDevice').textContent = data.current_device || 'Auto';
                     
                     // Show/hide GPU memory card
@@ -846,12 +960,6 @@
             }
         }
         
-        function updateStatus(text, className) {
-            const statusElement = document.getElementById('status');
-            statusElement.textContent = text;
-            statusElement.className = className;
-        }
-        
         function toggleDeviceSelector() {
             const panel = document.getElementById('deviceSelector');
             deviceSelectorVisible = !deviceSelectorVisible;
@@ -863,6 +971,8 @@
                 panel.classList.remove('show');
             }
         }
+        
+
         
         function loadDeviceInfo() {
             fetch('/devices')
@@ -970,8 +1080,103 @@
             });
         }
         
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const instruction = input.value.trim();
+            
+            if (!instruction || isProcessingChat) return;
+            
+            // Add user message to chat
+            addChatMessage(instruction, 'user');
+            input.value = '';
+            
+            // Disable input during processing
+            isProcessingChat = true;
+            sendButton.disabled = true;
+            input.disabled = true;
+            
+            // Add thinking message
+            const thinkingId = addChatMessage('🤔 Analyzing scene with depth intelligence...', 'assistant');
+            
+            // Send request using OpenAI-compatible endpoint
+            fetch('/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    max_tokens: 200,
+                    messages: [
+                        { 
+                            role: 'user', 
+                            content: [
+                                { type: 'text', text: instruction }
+                            ] 
+                        }
+                    ]
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                // Remove thinking message
+                removeChatMessage(thinkingId);
+                
+                if (data.error) {
+                    addChatMessage(`❌ ${data.error.message || data.error}`, 'assistant');
+                } else if (data.choices && data.choices[0]) {
+                    addChatMessage(data.choices[0].message.content, 'assistant');
+                } else {
+                    addChatMessage('❌ Unable to analyze scene. Please try again.', 'assistant');
+                }
+            })
+            .catch(e => {
+                removeChatMessage(thinkingId);
+                addChatMessage('❌ Failed to analyze scene. Please try again.', 'assistant');
+                console.error('Chat error:', e);
+            })
+            .finally(() => {
+                isProcessingChat = false;
+                sendButton.disabled = false;
+                input.disabled = false;
+                input.focus();
+            });
+        }
+        
+        function addChatMessage(text, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            const messageId = 'msg_' + Date.now() + '_' + Math.random();
+            messageDiv.id = messageId;
+            messageDiv.className = `chat-message ${type}-message`;
+            
+            const time = new Date().toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="message-text">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            return messageId;
+        }
+        
+        function removeChatMessage(messageId) {
+            const message = document.getElementById(messageId);
+            if (message) {
+                message.remove();
+            }
+        }
+        
+        function updateStatus(text, className) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = text;
+            statusElement.className = className;
+        }
+        
         function resetPerformanceMetrics() {
-            const metrics = ['fps', 'processingTime', 'totalFrames', 'cpuUsage', 'memoryUsage', 'queueSize', 'currentDevice'];
+            const metrics = ['fps', 'processingTime', 'visionTime', 'totalFrames', 'cpuUsage', 'memoryUsage', 'currentDevice'];
             metrics.forEach(id => {
                 const element = document.getElementById(id);
                 if (id === 'currentDevice') {
@@ -983,27 +1188,31 @@
             });
         }
         
-        // Advanced features
-        function handleImageClick(type) {
-            if (type === 'original' && isRunning) {
-                // Could add features like saving frame, toggling fullscreen, etc.
-                console.log('Original frame clicked');
-            } else if (type === 'depth' && isRunning) {
-                // Could add features like depth analysis, color map switching, etc.
-                console.log('Depth frame clicked');
-            }
-        }
-        
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             
-            // Add click handlers for images
-            document.getElementById('original').addEventListener('click', () => handleImageClick('original'));
-            document.getElementById('depth').addEventListener('click', () => handleImageClick('depth'));
+            // Load initial device info
+            loadDeviceInfo();
             
-            // Keyboard shortcuts
+            // Enable enter key for chat
+            document.getElementById('chatInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+                // Allow spacebar to work normally in chat input
+                e.stopPropagation();
+            });
+            
+            // Keyboard shortcuts (only when not focused on chat input)
             document.addEventListener('keydown', function(e) {
+                // Skip keyboard shortcuts if user is typing in chat
+                const chatInput = document.getElementById('chatInput');
+                if (document.activeElement === chatInput) {
+                    return; // Let normal typing work in chat
+                }
+                
                 if (e.code === 'Space') {
                     e.preventDefault();
                     if (isRunning) stopCamera();
@@ -1014,20 +1223,20 @@
                 } else if (e.code === 'KeyD') {
                     e.preventDefault();
                     toggleDeviceSelector();
+                } else if (e.code === 'KeyC' && e.ctrlKey) {
+                    e.preventDefault();
+                    chatInput.focus(); // Focus chat input with Ctrl+C
                 } else if (e.code === 'KeyG') {
                     e.preventDefault();
                     switchDevice('gpu');
-                } else if (e.code === 'KeyC') {
+                } else if (e.code === 'KeyC' && !e.ctrlKey) {
                     e.preventDefault();
                     switchDevice('cpu');
                 }
             });
             
-            // Load initial device info
-            loadDeviceInfo();
-            
-            console.log('🔥 ARIA Vision Pro initialized');
-            console.log('Shortcuts: Space = Start/Stop, P = Performance, D = Device, G = GPU, C = CPU');
+            console.log('🔥 ARIA Vision Pro with Chat initialized');
+            console.log('Shortcuts: Space = Start/Stop, P = Performance, D = Device, Ctrl+C = Chat, G = GPU, C = CPU');
         });
     </script>
 </body>

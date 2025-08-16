@@ -8,3 +8,6 @@ Pillow
 transformers
 numpy
 hf_xet
+psutil
+accelerate
+scipy
