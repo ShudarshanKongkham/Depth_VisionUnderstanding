@@ -410,22 +410,32 @@ class ARIAVisionProWithChat:
             instruction = ""
             image_data = None
             
+            print(f"🔍 Processing chat completion - content items: {len(content)}")
+            
             # Parse message content
             for item in content:
                 if item.get('type') == 'text':
                     instruction = item.get('text', 'What do you see?')
+                    print(f"📝 Text instruction: {instruction}")
                 elif item.get('type') == 'image_url':
                     image_url = item.get('image_url', {}).get('url', '')
+                    print(f"🖼️ Image URL length: {len(image_url)}")
                     if image_url.startswith('data:image'):
                         # Extract base64 data
                         image_data = image_url.split(',')[1]
+                        print(f"📷 Extracted image data: {len(image_data)} bytes")
             
-            # If no image provided, use current camera frame
-            if not image_data:
-                analysis = self.analyze_scene(instruction)
-            else:
+            # Process provided image (client-side camera sends base64 images)
+            if image_data:
                 # Process provided image
                 analysis = self._analyze_provided_image(image_data, instruction)
+            else:
+                # No image provided - return helpful message
+                analysis = {
+                    "scene_description": "I don't see any image from the camera. Please make sure the camera is active and try again.",
+                    "combined_analysis": "No camera image available. To use vision chat, please start the camera by clicking 'Launch Vision' and ensure the camera feed is active.",
+                    "timestamp": time.time()
+                }
             
             if "error" in analysis:
                 response_text = f"Error: {analysis['error']}"
@@ -476,19 +486,108 @@ class ARIAVisionProWithChat:
             if pil_image.mode != 'RGB':
                 pil_image = pil_image.convert('RGB')
             
+            # Resize for processing
+            pil_image = pil_image.resize(self.input_size)
+            
             # Analyze with vision model
             scene_result = self.vision_model(pil_image)
             scene_description = scene_result[0]['generated_text'] if scene_result else "Unable to analyze image"
             
-            # For external images, we can't provide depth analysis
-            return {
-                "scene_description": scene_description,
-                "combined_analysis": f"Image analysis: {scene_description}",
-                "timestamp": time.time()
-            }
+            # Generate depth analysis
+            if self.depth_estimator and self.model_loaded:
+                depth_result = self.depth_estimator(pil_image)
+                depth_map = np.array(depth_result['depth'])
+                
+                # Analyze depth context
+                depth_analysis = self._analyze_depth_from_map(depth_map)
+                combined_analysis = self._combine_vision_depth(scene_description, depth_analysis, instruction)
+                
+                return {
+                    "scene_description": scene_description,
+                    "depth_analysis": depth_analysis,
+                    "combined_analysis": combined_analysis,
+                    "timestamp": time.time()
+                }
+            else:
+                # No depth analysis available
+                return {
+                    "scene_description": scene_description,
+                    "combined_analysis": f"Image analysis: {scene_description}",
+                    "timestamp": time.time()
+                }
             
         except Exception as e:
             return {"error": f"Failed to process image: {str(e)}"}
+    
+    def _analyze_depth_from_map(self, depth_map):
+        """Analyze depth information from depth map"""
+        # Basic depth statistics
+        mean_depth = np.mean(depth_map)
+        min_depth = np.min(depth_map)
+        max_depth = np.max(depth_map)
+        
+        # Analyze depth distribution
+        near_pixels = np.sum(depth_map < mean_depth * 0.7)
+        far_pixels = np.sum(depth_map > mean_depth * 1.3)
+        total_pixels = depth_map.size
+        
+        near_percentage = (near_pixels / total_pixels) * 100
+        far_percentage = (far_pixels / total_pixels) * 100
+        
+        # Generate depth insights
+        if near_percentage > 40:
+            depth_context = "Scene has many close objects"
+        elif far_percentage > 40:
+            depth_context = "Scene is mostly distant"
+        else:
+            depth_context = "Scene has mixed depth levels"
+        
+        return {
+            "context": depth_context,
+            "near_percentage": round(near_percentage, 1),
+            "far_percentage": round(far_percentage, 1),
+            "depth_range": round(max_depth - min_depth, 2)
+        }
+    
+    def _generate_depth_image(self, image_base64):
+        """Generate depth visualization from base64 image"""
+        try:
+            # Decode base64 image
+            image_data = base64.b64decode(image_base64)
+            pil_image = Image.open(io.BytesIO(image_data))
+            
+            # Convert to RGB if necessary
+            if pil_image.mode != 'RGB':
+                pil_image = pil_image.convert('RGB')
+            
+            # Resize for processing
+            pil_image_resized = pil_image.resize(self.input_size)
+            
+            # Generate depth map
+            if self.depth_estimator and self.model_loaded:
+                depth_result = self.depth_estimator(pil_image_resized)
+                depth_map = np.array(depth_result['depth'])
+                
+                # Resize depth map to original image size
+                original_size = pil_image.size
+                depth_map_resized = cv2.resize(depth_map, original_size)
+                
+                # Normalize and apply heat colormap
+                depth_normalized = ((depth_map_resized - depth_map_resized.min()) * 
+                                  (255 / (depth_map_resized.max() - depth_map_resized.min()))).astype(np.uint8)
+                depth_colored = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_INFERNO)
+                
+                # Convert to base64
+                _, buffer = cv2.imencode('.jpg', depth_colored, [cv2.IMWRITE_JPEG_QUALITY, 85])
+                depth_b64 = base64.b64encode(buffer).decode('utf-8')
+                
+                return f'data:image/jpeg;base64,{depth_b64}'
+            else:
+                return None
+                
+        except Exception as e:
+            print(f"Depth image generation error: {e}")
+            return None
     
     def get_frame(self):
         """Get latest processed frame (non-blocking)"""
@@ -603,15 +702,16 @@ camera = ARIAVisionProWithChat()
 def index():
     return render_template('vision_chat.html')
 
-@app.route('/start')
-def start():
-    success = camera.start_camera()
-    return jsonify({'success': success})
+# Legacy server-side camera routes (replaced by client-side camera)
+# @app.route('/start')
+# def start():
+#     success = camera.start_camera()
+#     return jsonify({'success': success})
 
-@app.route('/stop')
-def stop():
-    camera.stop_camera()
-    return jsonify({'success': True})
+# @app.route('/stop')
+# def stop():
+#     camera.stop_camera()
+#     return jsonify({'success': True})
 
 @app.route('/status')
 def get_status():
@@ -640,16 +740,17 @@ def switch_device():
     result = camera.switch_device(device)
     return jsonify(result)
 
-@app.route('/frame')
-def get_frame():
-    original, depth, status = camera.get_frame()
-    if original and depth:
-        return jsonify({
-            'original': f'data:image/jpeg;base64,{original}',
-            'depth': f'data:image/jpeg;base64,{depth}',
-            'status': status
-        })
-    return jsonify({'error': status})
+# Legacy server-side frame route (replaced by client-side camera)
+# @app.route('/frame')
+# def get_frame():
+#     original, depth, status = camera.get_frame()
+#     if original and depth:
+#         return jsonify({
+#             'original': f'data:image/jpeg;base64,{original}',
+#             'depth': f'data:image/jpeg;base64,{depth}',
+#             'status': status
+#         })
+#     return jsonify({'error': status})
 
 # @app.route('/analyze_scene', methods=['POST'])
 # def analyze_scene():
@@ -660,13 +761,45 @@ def get_frame():
 
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
-    """OpenAI-compatible chat completions endpoint"""
+    """OpenAI-compatible chat completions endpoint with depth processing"""
     data = request.get_json()
     messages = data.get('messages', [])
     max_tokens = data.get('max_tokens', 150)
     
     result = camera.process_chat_completion(messages, max_tokens)
     return jsonify(result)
+
+@app.route('/process_depth', methods=['POST'])
+def process_depth():
+    """Process base64 image for depth estimation"""
+    try:
+        data = request.get_json()
+        image_data = data.get('image')
+        
+        if not image_data:
+            return jsonify({'error': 'No image data provided'})
+        
+        # Extract base64 data if it includes data URL prefix
+        if image_data.startswith('data:image'):
+            image_data = image_data.split(',')[1]
+        
+        # Process with depth model
+        result = camera._analyze_provided_image(image_data, "Generate depth map")
+        
+        if 'error' in result:
+            return jsonify({'error': result['error']})
+        
+        # Generate depth visualization
+        depth_image = camera._generate_depth_image(image_data)
+        
+        return jsonify({
+            'success': True,
+            'depth_image': depth_image,
+            'analysis': result.get('scene_description', '')
+        })
+        
+    except Exception as e:
+        return jsonify({'error': f'Depth processing failed: {str(e)}'})
 
 @app.route('/chat_history')
 def get_chat_history():

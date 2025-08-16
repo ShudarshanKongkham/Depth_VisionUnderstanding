@@ -565,6 +565,44 @@
         
         @media (max-width: 768px) {
             .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .video-box img, .video-box video, .video-box canvas {
+                height: 250px;
+            }
+            
+            .chat-messages {
+                max-height: 300px;
+            }
+            
+            .controls {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .controls button {
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+            
+            /* Mobile camera controls */
+            .video-section + div {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            
+            .video-section + div > div {
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
                 padding: 15px;
             }
             
@@ -709,11 +747,42 @@
                 <div class="video-section">
                     <div class="video-box">
                         <h3><i class="fas fa-camera"></i> Live Camera Feed</h3>
-                        <img id="original" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzY0ZmZkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkF3YWl0aW5nIElucHV0Li4uPC90ZXh0Pjwvc3ZnPg==">
+                        <video id="videoElement" autoplay muted playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 15px; display: none;"></video>
+                        <canvas id="captureCanvas" style="width: 100%; height: 300px; object-fit: cover; border-radius: 15px; display: none;"></canvas>
+                        <img id="original" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzY0ZmZkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNsaWNrIExhdW5jaCBWaXNpb24uLi48L3RleHQ+PC9zdmc+">
                     </div>
                     <div class="video-box">
                         <h3><i class="fas fa-fire"></i> AI Neural Depth Map</h3>
                         <img id="depth" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZjBmMjMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNjIxM2UiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2JiODZmYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFJIFByb2Nlc3NpbmcuLi48L3RleHQ+PC9zdmc+">
+                    </div>
+                </div>
+                
+                <!-- Camera Controls -->
+                <div style="background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), rgba(3, 218, 198, 0.05)); border-radius: 20px; padding: 20px; backdrop-filter: blur(20px); border: 1px solid rgba(100, 255, 218, 0.3); margin-top: 20px;">
+                    <h3 style="color: #64ffda; margin-bottom: 15px; font-size: 1.1em; font-weight: 600; text-align: center;">
+                        <i class="fas fa-video"></i> Camera Settings
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; color: #64ffda; font-size: 0.9em;">Camera Source:</label>
+                            <div style="display: flex; gap: 5px;">
+                                <select id="cameraSelect" style="flex: 1; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(100, 255, 218, 0.3); color: #fff; font-size: 0.9em;">
+                                    <option value="">Select Camera...</option>
+                                </select>
+                                <button id="flipCamera" onclick="toggleCameraFacing()" style="padding: 8px 12px; border-radius: 8px; background: rgba(100, 255, 218, 0.1); border: 1px solid rgba(100, 255, 218, 0.3); color: #64ffda; font-size: 0.9em; cursor: pointer; margin-right: 5px;" title="Switch Camera">🔄</button>
+                                <button onclick="testCapture()" style="padding: 8px 12px; border-radius: 8px; background: rgba(255, 152, 0, 0.1); border: 1px solid rgba(255, 152, 0, 0.3); color: #ff9800; font-size: 0.9em; cursor: pointer;" title="Test Capture">📸</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; color: #64ffda; font-size: 0.9em;">Capture Interval:</label>
+                            <select id="intervalSelect" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(100, 255, 218, 0.3); color: #fff; font-size: 0.9em;">
+                                <option value="1000">1 second</option>
+                                <option value="2000" selected>2 seconds</option>
+                                <option value="3000">3 seconds</option>
+                                <option value="5000">5 seconds</option>
+                                <option value="10000">10 seconds</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
@@ -797,6 +866,16 @@
         let currentDevice = 'auto';
         let isProcessingChat = false;
         
+        // Client-side camera variables
+        let videoElement = null;
+        let captureCanvas = null;
+        let captureContext = null;
+        let stream = null;
+        let availableCameras = [];
+        let currentCameraId = null;
+        let captureInterval = null;
+        let captureIntervalMs = 2000;
+        
         // Initialize animated background
         function createParticles() {
             const particles = document.getElementById('particles');
@@ -813,27 +892,37 @@
             }
         }
         
-        function startCamera() {
-            updateStatus('🚀 Initializing ARIA Vision Pro Systems...', 'pulse loading');
+        async function startCamera() {
+            if (isRunning) return;
             
-            fetch('/start')
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        isRunning = true;
-                        checkModelStatus();
-                        frameInterval = setInterval(updateFrame, 150);
-                        if (performancePanelVisible) {
-                            performanceInterval = setInterval(updatePerformance, 1000);
-                        }
-                    } else {
-                        updateStatus('❌ Failed to initialize camera system', '');
-                    }
-                })
-                .catch(e => {
-                    console.error('Start error:', e);
-                    updateStatus('❌ Connection error', '');
-                });
+            updateStatus('🚀 Requesting camera permission...', 'pulse loading');
+            
+            try {
+                // Load available cameras first
+                await loadAvailableCameras();
+                
+                // Start client-side camera
+                await startClientCamera();
+                
+                isRunning = true;
+                updateStatus('✅ ARIA Vision Pro Active - Client Camera Processing', 'success processing');
+                
+                // Start AI processing loop
+                startCaptureLoop();
+                
+                // Start performance monitoring
+                if (performancePanelVisible) {
+                    performanceInterval = setInterval(updatePerformance, 1000);
+                }
+                
+                // Update UI
+                document.querySelector('.start').style.display = 'none';
+                document.querySelector('.stop').style.display = 'inline-block';
+                
+            } catch (error) {
+                console.error('Camera start error:', error);
+                updateStatus('❌ Camera access denied or unavailable', 'error');
+            }
         }
 
         function checkModelStatus() {
@@ -857,48 +946,32 @@
         }
 
         function stopCamera() {
-            fetch('/stop')
-                .then(r => r.json())
-                .then(data => {
-                    isRunning = false;
-                    clearInterval(frameInterval);
-                    clearInterval(performanceInterval);
-                    updateStatus('⏹️ ARIA Vision Pro Stopped - All Systems Idle', '');
-                    resetPerformanceMetrics();
-                })
-                .catch(e => {
-                    console.error('Stop error:', e);
-                    updateStatus('❌ Stop error', '');
-                });
+            isRunning = false;
+            
+            // Stop intervals
+            if (frameInterval) clearInterval(frameInterval);
+            if (performanceInterval) clearInterval(performanceInterval);
+            if (captureInterval) clearInterval(captureInterval);
+            
+            // Stop camera stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            // Hide video elements
+            if (videoElement) {
+                videoElement.style.display = 'none';
+                document.getElementById('original').style.display = 'block';
+            }
+            
+            updateStatus('⏹️ ARIA Vision Pro Stopped - All Systems Idle', '');
+            document.querySelector('.start').style.display = 'inline-block';
+            document.querySelector('.stop').style.display = 'none';
+            resetPerformanceMetrics();
         }
 
-        function updateFrame() {
-            if (!isRunning) return;
-            
-            fetch('/frame')
-                .then(r => r.json())
-                .then(data => {
-                    if (data.original && data.depth) {
-                        document.getElementById('original').src = data.original;
-                        document.getElementById('depth').src = data.depth;
-                        if (!document.getElementById('status').textContent.includes('Active')) {
-                            updateStatus('🔥 ARIA Vision Pro Active - Multi-Modal Processing', '');
-                        }
-                    } else if (data.error) {
-                        if (data.error === 'Model not loaded yet') {
-                            updateStatus('🧠 Loading AI Neural Networks...', 'pulse loading');
-                        } else if (data.error === 'No frames processed yet') {
-                            updateStatus('⚡ Warming up processing pipeline...', 'pulse');
-                        } else {
-                            updateStatus(`⚠️ ${data.error}`, '');
-                        }
-                    }
-                })
-                .catch(e => {
-                    console.error('Frame error:', e);
-                    updateStatus('❌ Frame processing error', '');
-                });
-        }
+        // Deprecated: server-side frame polling removed. Client-side camera is used instead.
         
         function updatePerformance() {
             if (!isRunning) return;
@@ -1099,6 +1172,41 @@
             // Add thinking message
             const thinkingId = addChatMessage('🤔 Analyzing scene with depth intelligence...', 'assistant');
             
+            // Prepare optional current frame from client camera
+            let currentImageData = null;
+            try {
+                if (videoElement && captureCanvas && isRunning) {
+                    // Ensure context is initialized
+                    if (!captureContext) {
+                        captureContext = captureCanvas.getContext('2d');
+                    }
+                    
+                    // Check if video is playing and has dimensions
+                    if (videoElement.videoWidth > 0 && videoElement.videoHeight > 0) {
+                        captureContext.drawImage(videoElement, 0, 0, 640, 480);
+                        currentImageData = captureCanvas.toDataURL('image/jpeg', 0.8);
+                        console.log('📸 Captured frame for chat:', currentImageData.length, 'bytes');
+                    } else {
+                        console.log('⚠️ Video not ready:', videoElement.videoWidth, 'x', videoElement.videoHeight);
+                    }
+                } else {
+                    console.log('⚠️ Camera not ready:', {
+                        videoElement: !!videoElement,
+                        captureCanvas: !!captureCanvas,
+                        isRunning: isRunning
+                    });
+                }
+            } catch (e) {
+                console.error('❌ Error capturing frame for chat:', e);
+            }
+
+            // Debug log
+            console.log('🚀 Sending to API:', {
+                hasImage: !!currentImageData,
+                imageSize: currentImageData ? currentImageData.length : 0,
+                instruction: instruction
+            });
+
             // Send request using OpenAI-compatible endpoint
             fetch('/v1/chat/completions', {
                 method: 'POST',
@@ -1111,7 +1219,8 @@
                         { 
                             role: 'user', 
                             content: [
-                                { type: 'text', text: instruction }
+                                { type: 'text', text: instruction },
+                                ...(currentImageData ? [{ type: 'image_url', image_url: { url: currentImageData } }] : [])
                             ] 
                         }
                     ]
@@ -1188,6 +1297,278 @@
             });
         }
         
+        // Client-side camera functions
+        async function loadAvailableCameras() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                availableCameras = devices.filter(device => device.kind === 'videoinput');
+                
+                const cameraSelect = document.getElementById('cameraSelect');
+                cameraSelect.innerHTML = '<option value="">Select Camera...</option>';
+                
+                availableCameras.forEach((camera, index) => {
+                    const option = document.createElement('option');
+                    option.value = camera.deviceId;
+                    // Better mobile camera naming
+                    let cameraName = camera.label || `Camera ${index + 1}`;
+                    if (!camera.label && availableCameras.length === 2) {
+                        cameraName = index === 0 ? '📱 Front Camera' : '📷 Back Camera';
+                    } else if (camera.label) {
+                        if (camera.label.toLowerCase().includes('front')) cameraName = '📱 ' + camera.label;
+                        else if (camera.label.toLowerCase().includes('back')) cameraName = '📷 ' + camera.label;
+                        else if (camera.label.toLowerCase().includes('user')) cameraName = '📱 ' + camera.label;
+                        else if (camera.label.toLowerCase().includes('environment')) cameraName = '📷 ' + camera.label;
+                    }
+                    option.textContent = cameraName;
+                    cameraSelect.appendChild(option);
+                });
+                
+                // Set up camera selection change handler
+                cameraSelect.addEventListener('change', switchCamera);
+                document.getElementById('intervalSelect').addEventListener('change', updateCaptureInterval);
+                
+                console.log(`📹 Found ${availableCameras.length} cameras`);
+                
+            } catch (error) {
+                console.error('Failed to load cameras:', error);
+            }
+        }
+        
+        async function startClientCamera() {
+            // Initialize elements
+            videoElement = document.getElementById('videoElement');
+            captureCanvas = document.getElementById('captureCanvas');
+            captureContext = captureCanvas.getContext('2d');
+            
+            // Set canvas size
+            captureCanvas.width = 640;
+            captureCanvas.height = 480;
+            
+            // Get default camera if none selected
+            const cameraSelect = document.getElementById('cameraSelect');
+            currentCameraId = cameraSelect.value || (availableCameras[0]?.deviceId);
+            
+            if (!currentCameraId && availableCameras.length > 0) {
+                currentCameraId = availableCameras[0].deviceId;
+                cameraSelect.value = currentCameraId;
+            }
+            
+            // Request camera access with mobile-friendly constraints
+            const constraints = {
+                video: {
+                    deviceId: currentCameraId ? { exact: currentCameraId } : true,
+                    width: { ideal: 640, min: 320 },
+                    height: { ideal: 480, min: 240 },
+                    frameRate: { ideal: 30, min: 15 },
+                    facingMode: currentCameraId ? undefined : 'user' // Default to front camera on mobile
+                }
+            };
+            
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            videoElement.srcObject = stream;
+            
+            // Show video element, hide placeholder
+            videoElement.style.display = 'block';
+            document.getElementById('original').style.display = 'none';
+            
+            // Wait for video to be ready
+            videoElement.addEventListener('loadedmetadata', function() {
+                console.log('📹 Video metadata loaded:', videoElement.videoWidth, 'x', videoElement.videoHeight);
+            });
+            
+            videoElement.addEventListener('canplay', function() {
+                console.log('📹 Video can play - ready for capture');
+            });
+            
+            console.log('📹 Client camera started successfully');
+        }
+        
+        async function switchCamera() {
+            const cameraSelect = document.getElementById('cameraSelect');
+            const newCameraId = cameraSelect.value;
+            
+            if (!newCameraId || newCameraId === currentCameraId) return;
+            
+            try {
+                // Stop current stream
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Start new camera
+                currentCameraId = newCameraId;
+                const constraints = {
+                    video: {
+                        deviceId: { exact: currentCameraId },
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        frameRate: { ideal: 30 }
+                    }
+                };
+                
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                videoElement.srcObject = stream;
+                
+                updateStatus(`📹 Switched to ${cameraSelect.options[cameraSelect.selectedIndex].text}`, 'success');
+                
+            } catch (error) {
+                console.error('Camera switch error:', error);
+                updateStatus('❌ Failed to switch camera', 'error');
+            }
+        }
+        
+        function updateCaptureInterval() {
+            const intervalSelect = document.getElementById('intervalSelect');
+            captureIntervalMs = parseInt(intervalSelect.value);
+            
+            // Restart capture loop with new interval
+            if (isRunning && captureInterval) {
+                clearInterval(captureInterval);
+                startCaptureLoop();
+            }
+            
+            updateStatus(`⏱️ Capture interval: ${captureIntervalMs/1000}s`, 'success');
+        }
+        
+        function startCaptureLoop() {
+            // Start capture interval
+            captureInterval = setInterval(captureAndProcess, captureIntervalMs);
+            console.log(`🔄 Started capture loop at ${captureIntervalMs}ms intervals`);
+        }
+        
+        async function captureAndProcess() {
+            if (!videoElement || !captureCanvas || !isRunning) return;
+            
+            try {
+                // Draw video frame to canvas
+                captureContext.drawImage(videoElement, 0, 0, 640, 480);
+                
+                // Convert to base64
+                const imageData = captureCanvas.toDataURL('image/jpeg', 0.8);
+                
+                // Send to AI API
+                await processFrameWithAI(imageData);
+                
+            } catch (error) {
+                console.error('Capture error:', error);
+            }
+        }
+        
+        async function processFrameWithAI(imageData) {
+            try {
+                // Send to depth processing API
+                const response = await fetch('/process_depth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: imageData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.depth_image) {
+                    // Update depth visualization with AI-generated depth map
+                    document.getElementById('depth').src = result.depth_image;
+                } else {
+                    // Fallback to client-side depth visualization
+                    await generateDepthVisualization(imageData);
+                }
+                
+            } catch (error) {
+                console.error('AI processing error:', error);
+                // Fallback to client-side depth visualization
+                await generateDepthVisualization(imageData);
+            }
+        }
+        
+        async function generateDepthVisualization(imageData) {
+            // Create depth effect visualization
+            const img = new Image();
+            img.onload = function() {
+                const depthCanvas = document.createElement('canvas');
+                const depthCtx = depthCanvas.getContext('2d');
+                depthCanvas.width = 640;
+                depthCanvas.height = 480;
+                
+                // Draw original image
+                depthCtx.drawImage(img, 0, 0, 640, 480);
+                
+                // Apply depth effect (radial gradient)
+                const gradient = depthCtx.createRadialGradient(320, 240, 0, 320, 240, 300);
+                gradient.addColorStop(0, 'rgba(255, 255, 0, 0.3)');
+                gradient.addColorStop(0.5, 'rgba(255, 100, 0, 0.5)');
+                gradient.addColorStop(1, 'rgba(100, 0, 255, 0.7)');
+                
+                depthCtx.globalCompositeOperation = 'overlay';
+                depthCtx.fillStyle = gradient;
+                depthCtx.fillRect(0, 0, 640, 480);
+                
+                // Update depth image
+                document.getElementById('depth').src = depthCanvas.toDataURL();
+            };
+            img.src = imageData;
+        }
+        
+        function toggleCameraFacing() {
+            // Quick toggle between front and back camera (mobile)
+            if (availableCameras.length < 2) return;
+            
+            const cameraSelect = document.getElementById('cameraSelect');
+            const currentIndex = availableCameras.findIndex(cam => cam.deviceId === currentCameraId);
+            const nextIndex = (currentIndex + 1) % availableCameras.length;
+            
+            cameraSelect.value = availableCameras[nextIndex].deviceId;
+            switchCamera();
+        }
+        
+        function testCapture() {
+            // Test function to debug camera capture
+            console.log('🧪 Testing camera capture...');
+            console.log('Camera state:', {
+                videoElement: !!videoElement,
+                captureCanvas: !!captureCanvas,
+                captureContext: !!captureContext,
+                isRunning: isRunning,
+                videoWidth: videoElement?.videoWidth,
+                videoHeight: videoElement?.videoHeight,
+                videoReady: videoElement?.readyState
+            });
+            
+            if (videoElement && captureCanvas && isRunning) {
+                try {
+                    if (!captureContext) {
+                        captureContext = captureCanvas.getContext('2d');
+                    }
+                    
+                    if (videoElement.videoWidth > 0 && videoElement.videoHeight > 0) {
+                        captureContext.drawImage(videoElement, 0, 0, 640, 480);
+                        const imageData = captureCanvas.toDataURL('image/jpeg', 0.8);
+                        console.log('✅ Test capture successful:', imageData.length, 'bytes');
+                        updateStatus('📸 Test capture successful!', 'success');
+                        
+                        // Show preview of captured image
+                        const img = new Image();
+                        img.onload = function() {
+                            console.log('📷 Captured image dimensions:', img.width, 'x', img.height);
+                        };
+                        img.src = imageData;
+                    } else {
+                        console.log('❌ Video not ready for capture');
+                        updateStatus('❌ Video not ready for capture', 'error');
+                    }
+                } catch (e) {
+                    console.error('❌ Test capture failed:', e);
+                    updateStatus('❌ Test capture failed: ' + e.message, 'error');
+                }
+            } else {
+                console.log('❌ Camera not initialized');
+                updateStatus('❌ Camera not initialized', 'error');
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
