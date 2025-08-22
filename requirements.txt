@@ -1,5 +1,5 @@
-#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+# installed torch-2.8.0+cu128 torchaudio-2.8.0+cu128
 flask
 opencv-python
 torch
@@ -11,3 +11,4 @@ hf_xet
 psutil
 accelerate
 scipy
+ultralytics
