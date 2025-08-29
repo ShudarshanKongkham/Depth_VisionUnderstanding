@@ -134,7 +134,11 @@ def get_object_distance(raw_depth, box):
     h, w = raw_depth.shape
     cx = np.clip(cx, 0, w - 1)
     cy = np.clip(cy, 0, h - 1)
-    distance = raw_depth[cy, cx]
+    # distance = raw_depth[cy, cx]
+    inv_depth = raw_depth.max() - raw_depth
+    distance = inv_depth[cy, cx]
+
+    # print(f"Inv Raw depth min: {inv_depth.min()}, max: {inv_depth.max()}")
     return distance
 
 def visualize(frame, results, class_names, class_colors, raw_depth=None):
@@ -180,7 +184,7 @@ def visualize(frame, results, class_names, class_colors, raw_depth=None):
                 # If raw_depth is provided, calculate distance and add it to the label
                 if raw_depth is not None:
                     distance = get_object_distance(raw_depth, box)
-                    label += f" | Dist: {distance:.2f}"
+                    label += f"| Dist: {distance:.2f}"
 
                 # Draw the final label on the frame
                 cv2.putText(frame_copy, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
